@@ -9,6 +9,7 @@ import com.kodilla.library.domain.dto.BookRentDto;
 import com.kodilla.library.domain.dto.BookTitleDto;
 import com.kodilla.library.mapper.BookTitleMapper;
 import com.kodilla.library.service.BookTitleDbService;
+import com.google.gson.Gson;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -146,5 +147,64 @@ public class BookTitleControllerTestSuite {
                 .characterEncoding("UTF-8")
                 .param("id", "1"))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    public void shouldCreateTitle() throws Exception {
+        //Given
+        List<BookRentDto> rentDtos = new ArrayList<>();
+        rentDtos.add(new BookRentDto(1L, 1L, 1L, LocalDate.of(2018, 9, 21), LocalDate.of(2018, 9, 30)));
+        List<BookRent> rents = new ArrayList<>();
+        BookCopy bookCopy = new BookCopy();
+        BookReader bookReader = new BookReader();
+        rents.add(new BookRent(1L, bookCopy, bookReader, LocalDate.of(2018, 9, 21), LocalDate.of(2018, 9, 30)));
+        List<BookCopy> copies = new ArrayList<>();
+        BookTitle bookTitle = new BookTitle(1L, "Altered Carbon", "Richard K. Morgan", 2002, copies);
+        copies.add(new BookCopy(1L, bookTitle, "Lost", rents));
+        List<BookCopyDto> copiesDto = new ArrayList<>();
+        copiesDto.add(new BookCopyDto(1L, 1L, "Lost", rentDtos));
+        BookTitleDto bookTitleDto = new BookTitleDto(1L, "Altered Carbon", "Richard K. Morgan", 2002, copiesDto);
+
+        when(titleDbService.saveBookTitle(bookTitle)).thenReturn(bookTitle);
+
+        Gson gson = new Gson();
+        String jsonContent = gson.toJson(bookTitleDto);
+        //When&Then
+        mockMvc.perform(post("/v1/books")
+                .contentType(MediaType.APPLICATION_JSON)
+                .characterEncoding("UTF-8")
+                .content(jsonContent))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void shouldUpdateTitle() throws Exception {
+        //Given
+        List<BookRentDto> rentDtos = new ArrayList<>();
+        rentDtos.add(new BookRentDto(1L, 1L, 1L, LocalDate.of(2018, 9, 21), LocalDate.of(2018, 9, 30)));
+        List<BookRent> rents = new ArrayList<>();
+        BookCopy bookCopy = new BookCopy();
+        BookReader bookReader = new BookReader();
+        rents.add(new BookRent(1L, bookCopy, bookReader, LocalDate.of(2018, 9, 21), LocalDate.of(2018, 9, 30)));
+        List<BookCopy> copies = new ArrayList<>();
+        BookTitle bookTitle = new BookTitle(1L, "Altered Carbon", "Richard K. Morgan", 2002, copies);
+        copies.add(new BookCopy(1L, bookTitle, "Lost", rents));
+        List<BookCopyDto> copiesDto = new ArrayList<>();
+        copiesDto.add(new BookCopyDto(1L, 1L, "Lost", rentDtos));
+        BookTitleDto bookTitleDto = new BookTitleDto(1L, "Altered Carbon", "Richard K. Morgan", 2002, copiesDto);
+
+        when(titleDbService.saveBookTitle(titleMapper.mapToBookTitle(bookTitleDto))).thenReturn(bookTitle);
+        when(titleMapper.mapToBookTitleDto(bookTitle)).thenReturn(bookTitleDto);
+
+        Gson gson = new Gson();
+        String jsonContent = gson.toJson(bookTitleDto);
+        //When&Then
+        mockMvc.perform(post("/v1/books")
+                .contentType(MediaType.APPLICATION_JSON)
+                .characterEncoding("UTF-8")
+                .content(jsonContent))
+                .andExpect(jsonPath("$.id", is(1)))
+                .andExpect(jsonPath("$.title", is("Altered Carbon")))
+                .andExpect(jsonPath("$.author", is("Richard K. Morgan")));
     }
 }
