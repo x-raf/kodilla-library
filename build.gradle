@@ -28,12 +28,16 @@ dependencies {
     compile('org.springframework.boot:spring-boot-starter-jdbc')
     compile('org.springframework.boot:spring-boot-starter-validation')
     compile('org.springframework.boot:spring-boot-starter-web')
-    runtime('com.h2database:h2')
+    //H2 Tests
+    
     runtime('mysql:mysql-connector-java')
     compileOnly('org.projectlombok:lombok')
-    compile('com.google.code.gson', name: 'gson', version: '2.8.5')
+    compile('com.google.code.gson:gson')
     testCompile('org.springframework.boot:spring-boot-starter-test')
-
+    //Jackson DateTime
+    compile ('com.fasterxml.jackson.module:jackson-module-parameter-names')
+    compile ('com.fasterxml.jackson.datatype:jackson-datatype-jdk8')
+    compile ('com.fasterxml.jackson.datatype:jackson-datatype-jsr310')
     //Swagger
     compile('io.springfox:springfox-swagger2:2.9.2')
     compile('io.springfox:springfox-swagger-ui:2.9.2')

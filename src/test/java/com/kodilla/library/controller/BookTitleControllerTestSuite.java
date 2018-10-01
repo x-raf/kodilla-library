@@ -169,6 +169,7 @@ public class BookTitleControllerTestSuite {
 
         Gson gson = new Gson();
         String jsonContent = gson.toJson(bookTitleDto);
+        System.out.println(jsonContent);
         //When&Then
         mockMvc.perform(post("/v1/books")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -199,7 +200,7 @@ public class BookTitleControllerTestSuite {
         Gson gson = new Gson();
         String jsonContent = gson.toJson(bookTitleDto);
         //When&Then
-        mockMvc.perform(post("/v1/books")
+        mockMvc.perform(put("/v1/books")
                 .contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding("UTF-8")
                 .content(jsonContent))
