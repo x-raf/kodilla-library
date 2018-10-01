@@ -1,6 +1,5 @@
 package com.kodilla.library.domain;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -34,10 +33,8 @@ public class BookRent {
 
     @Column
     @NotNull
-    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate rentStartDate;
 
     @Column
-    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate rentEndDate;
 }

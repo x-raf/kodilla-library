@@ -1,5 +1,6 @@
 package com.kodilla.library.controller;
 
+import com.google.gson.Gson;
 import com.kodilla.library.domain.BookCopy;
 import com.kodilla.library.domain.BookReader;
 import com.kodilla.library.domain.BookRent;
@@ -9,7 +10,6 @@ import com.kodilla.library.domain.dto.BookRentDto;
 import com.kodilla.library.domain.dto.BookTitleDto;
 import com.kodilla.library.mapper.BookTitleMapper;
 import com.kodilla.library.service.BookTitleDbService;
-import com.google.gson.Gson;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +33,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(BookTitleController.class)
-public class BookTitleControllerTestSuite {
+public class TitleControllerTestSuite {
 
     @Autowired
     private MockMvc mockMvc;
