@@ -46,7 +46,7 @@ public class RentMapperTestSuite {
         //Then
         assertEquals(LocalDate.of(2018, 9, 30), bookRent.getRentEndDate());
         assertEquals("John", bookRent.getBookReader().getFirstName());
-        //assertEquals(Long.valueOf(1L),bookRent.getBookReader().getId());
+        assertEquals(Long.valueOf(1L),bookRent.getBookReader().getId());
     }
 
     @Test
