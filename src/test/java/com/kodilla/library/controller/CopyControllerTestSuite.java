@@ -1,6 +1,8 @@
 package com.kodilla.library.controller;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.kodilla.library.adapter.LocalDateAdapter;
 import com.kodilla.library.domain.BookCopy;
 import com.kodilla.library.domain.BookRent;
 import com.kodilla.library.domain.BookTitle;
@@ -128,7 +130,10 @@ public class CopyControllerTestSuite {
 
         when(copyDbService.saveBookCopy(bookCopy)).thenReturn(bookCopy);
 
-        Gson gson = new Gson();
+        Gson gson = new GsonBuilder()
+                .setPrettyPrinting()
+                .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
+                .create();
         String jsonContent = gson.toJson(bookCopyDto);
         //When&Then
         mockMvc.perform(post("/v1/copies")
@@ -150,7 +155,10 @@ public class CopyControllerTestSuite {
         when(copyDbService.saveBookCopy(copyMapper.mapToBookCopy(bookCopyDto))).thenReturn(bookCopy);
         when(copyMapper.mapToBookCopyDto(bookCopy)).thenReturn(bookCopyDto);
 
-        Gson gson = new Gson();
+        Gson gson = new GsonBuilder()
+                .setPrettyPrinting()
+                .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
+                .create();
         String jsonContent = gson.toJson(bookCopyDto);
         //When&Then
         mockMvc.perform(post("/v1/copies")

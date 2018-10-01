@@ -1,6 +1,8 @@
 package com.kodilla.library.controller;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.kodilla.library.adapter.LocalDateAdapter;
 import com.kodilla.library.domain.BookCopy;
 import com.kodilla.library.domain.BookReader;
 import com.kodilla.library.domain.BookRent;
@@ -33,6 +35,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(BookTitleController.class)
+
 public class TitleControllerTestSuite {
 
     @Autowired
@@ -167,7 +170,10 @@ public class TitleControllerTestSuite {
 
         when(titleDbService.saveBookTitle(bookTitle)).thenReturn(bookTitle);
 
-        Gson gson = new Gson();
+        Gson gson = new GsonBuilder()
+                .setPrettyPrinting()
+                .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
+                .create();
         String jsonContent = gson.toJson(bookTitleDto);
         System.out.println(jsonContent);
         //When&Then
@@ -197,7 +203,10 @@ public class TitleControllerTestSuite {
         when(titleDbService.saveBookTitle(titleMapper.mapToBookTitle(bookTitleDto))).thenReturn(bookTitle);
         when(titleMapper.mapToBookTitleDto(bookTitle)).thenReturn(bookTitleDto);
 
-        Gson gson = new Gson();
+        Gson gson = new GsonBuilder()
+                .setPrettyPrinting()
+                .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
+                .create();
         String jsonContent = gson.toJson(bookTitleDto);
         //When&Then
         mockMvc.perform(put("/v1/books")
@@ -209,3 +218,4 @@ public class TitleControllerTestSuite {
                 .andExpect(jsonPath("$.author", is("Richard K. Morgan")));
     }
 }
+

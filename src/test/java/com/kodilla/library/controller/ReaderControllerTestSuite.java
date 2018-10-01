@@ -1,6 +1,8 @@
 package com.kodilla.library.controller;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.kodilla.library.adapter.LocalDateAdapter;
 import com.kodilla.library.domain.BookReader;
 import com.kodilla.library.domain.BookRent;
 import com.kodilla.library.domain.dto.BookReaderDto;
@@ -126,7 +128,10 @@ public class ReaderControllerTestSuite {
 
         when(readerDbService.saveReader(bookReader)).thenReturn(bookReader);
 
-        Gson gson = new Gson();
+        Gson gson = new GsonBuilder()
+                .setPrettyPrinting()
+                .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
+                .create();
         String jsonContent = gson.toJson(bookReaderDto);
         //When&Then
         mockMvc.perform(post("/v1/readers")
@@ -147,7 +152,10 @@ public class ReaderControllerTestSuite {
         when(readerDbService.saveReader(readerMapper.mapToBookReader(bookReaderDto))).thenReturn(bookReader);
         when(readerMapper.mapToBookReaderDto(bookReader)).thenReturn(bookReaderDto);
 
-        Gson gson = new Gson();
+        Gson gson = new GsonBuilder()
+                .setPrettyPrinting()
+                .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
+                .create();
         String jsonContent = gson.toJson(bookReaderDto);
         //When&Then
         mockMvc.perform(post("/v1/readers")
