@@ -39,8 +39,6 @@ dependencies {
     compile ('com.fasterxml.jackson.module:jackson-module-parameter-names:2.9.7')
     compile ('com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.9.7')
     compile ('com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.9.7')
-    //Gson DateTime
-    //compile('com.fatboyindustrial.gson-javatime-serialisers:gson-javatime-serialisers:1.1.1')
 
     //Swagger
     compile('io.springfox:springfox-swagger2:2.9.2')
