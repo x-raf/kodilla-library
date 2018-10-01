@@ -175,7 +175,6 @@ public class TitleControllerTestSuite {
                 .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
                 .create();
         String jsonContent = gson.toJson(bookTitleDto);
-        System.out.println(jsonContent);
         //When&Then
         mockMvc.perform(post("/v1/books")
                 .contentType(MediaType.APPLICATION_JSON)
