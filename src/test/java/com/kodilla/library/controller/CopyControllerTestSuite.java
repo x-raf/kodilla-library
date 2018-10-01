@@ -161,11 +161,11 @@ public class CopyControllerTestSuite {
                 .create();
         String jsonContent = gson.toJson(bookCopyDto);
         //When&Then
-        mockMvc.perform(post("/v1/copies")
+        mockMvc.perform(put("/v1/copies")
                 .contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding("UTF-8")
                 .content(jsonContent))
-                .andExpect(status().isOk());
-                //.andExpect(jsonPath("$.bookStatus", is("Lost")));
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.bookStatus", is("Lost")));
     }
 }

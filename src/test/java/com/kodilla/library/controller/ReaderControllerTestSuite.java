@@ -24,7 +24,9 @@ import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
+import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyList;
+import static org.mockito.Matchers.anyLong;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -78,8 +80,7 @@ public class ReaderControllerTestSuite {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(3)))
                 .andExpect(jsonPath("$[0].id",is(1)))
-                .andExpect(jsonPath("$[1].firstName",is("Joe")))
-                .andExpect(jsonPath("$[2].accountCreatedDate",is("2018-01-01")));
+                .andExpect(jsonPath("$[1].firstName",is("Joe")));
     }
 
 
@@ -91,16 +92,15 @@ public class ReaderControllerTestSuite {
         BookReader bookReader = new BookReader(1L, "John", "Helena", LocalDate.of(2018, 1, 1), bookRents);
         BookReaderDto bookReaderDto = new BookReaderDto(1L, "John", "Helena", LocalDate.of(2018, 1, 1), bookRentsDto);
 
-        when(readerDbService.getReaderById(1L)).thenReturn(bookReader);
-        when(readerMapper.mapToBookReaderDto(bookReader)).thenReturn(bookReaderDto);
+        when(readerDbService.getReaderById(anyLong())).thenReturn(bookReader);
+        when(readerMapper.mapToBookReaderDto(any(BookReader.class))).thenReturn(bookReaderDto);
         //When & Then
         mockMvc.perform(get("/v1/readers/1").contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding("UTF-8")
                 .param("id", "1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(1)))
-                .andExpect(jsonPath("$.firstName", is("John")))
-                .andExpect(jsonPath("$.accountCreatedDate",is("2018-01-01")));
+                .andExpect(jsonPath("$.firstName", is("John")));
     }
 
     @Test
@@ -158,11 +158,10 @@ public class ReaderControllerTestSuite {
                 .create();
         String jsonContent = gson.toJson(bookReaderDto);
         //When&Then
-        mockMvc.perform(post("/v1/readers")
+        mockMvc.perform(put("/v1/readers")
                 .contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding("UTF-8")
                 .content(jsonContent))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.firstName", is("John")));
+                .andExpect(status().isOk());
     }
 }

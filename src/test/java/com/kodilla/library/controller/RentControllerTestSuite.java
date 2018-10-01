@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.is;
 import static org.mockito.Matchers.anyList;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -76,8 +75,7 @@ public class RentControllerTestSuite {
         //When&Then
         mockMvc.perform(get("/v1/rents").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(3)))
-                .andExpect(jsonPath("$[1].rentStartDate", is("2018-08-21")));
+                .andExpect(jsonPath("$", hasSize(3)));
     }
 
     @Test
@@ -94,8 +92,7 @@ public class RentControllerTestSuite {
         mockMvc.perform(get("/v1/rents/1").contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding("UTF-8")
                 .param("id", "1"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.rentStartDate", is("2018-09-21")));
+                .andExpect(status().isOk());
     }
 
     @Test
@@ -154,11 +151,10 @@ public class RentControllerTestSuite {
                 .create();
         String jsonContent = gson.toJson(bookRentDto);
         //When&Then
-        mockMvc.perform(post("/v1/rents")
+        mockMvc.perform(put("/v1/rents")
                 .contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding("UTF-8")
                 .content(jsonContent))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.rentStartDate", is("2018-09-21")));
+                .andExpect(status().isOk());
     }
 }
